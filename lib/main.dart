@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/calorie_tracking.dart';
+import 'dart:html';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +22,10 @@ class MyApp extends StatelessWidget {
 }
 
 TextEditingController ageController = TextEditingController();
+TextEditingController heightController = TextEditingController();
+TextEditingController weightController = TextEditingController();
+var gender = "male";
+String activity = 'Light';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,8 +35,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _selectedGender = "male";
-  String dropdownvalue = 'Light';
   var items = ['Light', 'Moderate', 'Active', 'Very Active'];
 
   @override
@@ -47,6 +51,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                    //age input field
                     child: TextFormField(
                       keyboardType: TextInputType.number,
                       controller: ageController,
@@ -56,18 +61,24 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  //height input field
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: heightController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Height in cm',
                       ),
                     ),
                   ),
+                  //weight input field
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: weightController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Weight in kg',
@@ -79,6 +90,7 @@ class _HomePageState extends State<HomePage> {
                     indent: 20,
                     endIndent: 20,
                   ),
+                  //gender radio buttons start
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: Text("Please select gender"),
@@ -88,10 +100,10 @@ class _HomePageState extends State<HomePage> {
                     child: RadioListTile(
                         title: Text("Male"),
                         value: 'male',
-                        groupValue: _selectedGender,
+                        groupValue: gender,
                         onChanged: (value) {
                           setState(() {
-                            _selectedGender = "male";
+                            gender = "male";
                           });
                         }),
                   ),
@@ -100,31 +112,33 @@ class _HomePageState extends State<HomePage> {
                     child: RadioListTile(
                         title: Text("Female"),
                         value: 'female',
-                        groupValue: _selectedGender,
+                        groupValue: gender,
                         onChanged: (value) {
                           setState(() {
-                            _selectedGender = "female";
+                            gender = "female";
                           });
                         }),
                   ),
+                  //gender radio buttons end
                   const Divider(
                     height: 5,
                     indent: 20,
                     endIndent: 20,
                   ),
+                  //level of activity drop down
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: Text("Select level of activity"),
                   ),
                   DropdownButton(
-                    value: dropdownvalue,
+                    value: activity,
                     icon: Icon(Icons.keyboard_arrow_down),
                     items: items.map((String items) {
                       return DropdownMenuItem(value: items, child: Text(items));
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        dropdownvalue = "$value";
+                        activity = "$value";
                       });
                     },
                   ),
@@ -136,13 +150,24 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => {
                     if (int.parse(ageController.text) >= 15 &&
                         int.parse(ageController.text) <= 80)
-                      {print("success")}
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CalorieTracking(
+                                  age: ageController.text,
+                                  height: heightController.text,
+                                  weight: weightController.text,
+                                  gender: gender,
+                                  activity: activity)),
+                        )
+                      }
                     else
                       {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             duration: const Duration(milliseconds: 2000),
-                            content: const Text('Please check age input'),
+                            content: const Text('Please check inputs'),
                           ),
                         ),
                       },
