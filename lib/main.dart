@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/calorie_tracking.dart';
-import 'dart:html';
 
 void main() {
   runApp(MyApp());
