@@ -29,7 +29,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final VoidCallback onPressed;
   var _selectedGender = "male";
   String dropdownvalue = 'Light';
   var items = ['Light', 'Moderate', 'Active', 'Very Active'];
@@ -133,9 +132,22 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          ElevatedButton(onPressed: {
-            if (ageController >= 15) {_generateCalories} else {print("object")}
-          }, child: Text("Calculate"))
+          ElevatedButton(
+              onPressed: () => {
+                    if (int.parse(ageController.text) >= 15 &&
+                        int.parse(ageController.text) <= 80)
+                      {print("success")}
+                    else
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(milliseconds: 2000),
+                            content: const Text('Please check age input'),
+                          ),
+                        ),
+                      },
+                  },
+              child: Text("Calculate"))
         ]),
       ),
     );
