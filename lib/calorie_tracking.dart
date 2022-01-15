@@ -27,7 +27,7 @@ class _CalorieTrackingState extends State<CalorieTracking> {
           child: Column(
             children: [
               Container(
-                height: 200,
+                height: 100,
                 color: Colors.grey[200],
                 child: Center(
                   child: Column(
@@ -38,7 +38,7 @@ class _CalorieTrackingState extends State<CalorieTracking> {
                         style: TextStyle(color: Colors.blue[800], fontSize: 16),
                       ),
                       Text(
-                        "Calories/day",
+                        "1,500",
                         style: TextStyle(color: Colors.grey[600], fontSize: 40),
                       ),
                     ],
