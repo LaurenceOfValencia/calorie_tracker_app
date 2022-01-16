@@ -27,6 +27,8 @@ class _CalorieTrackingState extends State<CalorieTracking> {
 
   int caloriesNeeded = 2000;
 
+  List<Widget> _listOfEntries = [Text("Entries")];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,66 +52,61 @@ class _CalorieTrackingState extends State<CalorieTracking> {
                       Text(
                         "$iBMR calories left",
                         style: TextStyle(color: Colors.grey[800], fontSize: 30),
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
-              Expanded(
+              GestureDetector(
+                onTap: () {
+                  //add the new item here
+                },
                 child: Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                      color: Colors.blue[500], shape: BoxShape.circle),
                   child: Center(
-                    child: Column(
+                    child: Text(
+                      "+",
+                      style: TextStyle(color: Colors.white, fontSize: 25),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget addEntry() {
+    return Expanded(
+      child: Container(
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.white,
+                  height: 50,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            color: Colors.white,
-                            height: 50,
-                            child: Center(
-                                child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("entry name"),
-                                Text("\ 100 cal"),
-                              ],
-                            )),
-                          ),
-                        )
+                        Text("Food name"),
+                        Text("\ 100 cal"),
                       ],
                     ),
                   ),
                 ),
               ),
-              Container(
-                height: 75,
-                width: 75,
-                decoration: BoxDecoration(
-                    color: Colors.blue[500], shape: BoxShape.circle),
-                child: Center(
-                  child: Text(
-                    "+",
-                    style: TextStyle(color: Colors.white, fontSize: 25),
-                  ),
-                ),
-              ),
-              // Center(
-              //   child: Container(
-              //     child: ElevatedButton(
-              //       onPressed: () => print("$iBMR"),
-              //       //CalculateCalories(
-              //       //     gender: gender,
-              //       //     age: double.parse(ageController.text),
-              //       //     height: double.parse(heightController.text),
-              //       //     weight: double.parse(weightController.text),
-              //       //     activity: activity),
-              //       child: Text("data"),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
