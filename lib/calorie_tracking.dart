@@ -3,6 +3,7 @@ import 'package:my_app/main.dart';
 
 class CalorieTracking extends StatefulWidget {
   final age, height, weight, gender, activity;
+
   const CalorieTracking(
       {Key? key,
       required this.age,
@@ -17,6 +18,15 @@ class CalorieTracking extends StatefulWidget {
 }
 
 class _CalorieTrackingState extends State<CalorieTracking> {
+  int? iBMR = CalculateCalories(
+      gender: gender,
+      age: double.parse(ageController.text),
+      height: double.parse(heightController.text),
+      weight: double.parse(weightController.text),
+      bmrMultiplier: calculateBMR(activity: activity));
+
+  int caloriesNeeded = 2000;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +48,9 @@ class _CalorieTrackingState extends State<CalorieTracking> {
                         style: TextStyle(color: Colors.blue[800], fontSize: 16),
                       ),
                       Text(
-                        "1,500",
-                        style: TextStyle(color: Colors.grey[600], fontSize: 40),
-                      ),
+                        "$iBMR calories left",
+                        style: TextStyle(color: Colors.grey[800], fontSize: 30),
+                      )
                     ],
                   ),
                 ),
@@ -85,15 +95,21 @@ class _CalorieTrackingState extends State<CalorieTracking> {
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                 ),
-              )
+              ),
               // Center(
               //   child: Container(
               //     child: ElevatedButton(
-              //       onPressed: () => CalculateCalories(gender: gender),
+              //       onPressed: () => print("$iBMR"),
+              //       //CalculateCalories(
+              //       //     gender: gender,
+              //       //     age: double.parse(ageController.text),
+              //       //     height: double.parse(heightController.text),
+              //       //     weight: double.parse(weightController.text),
+              //       //     activity: activity),
               //       child: Text("data"),
               //     ),
               //   ),
-              // )
+              // ),
             ],
           ),
         ),
@@ -102,10 +118,37 @@ class _CalorieTrackingState extends State<CalorieTracking> {
   }
 }
 
-CalculateCalories({String? gender}) {
+int? CalculateCalories(
+    {String? gender,
+    double? age,
+    double? height,
+    double? weight,
+    double? bmrMultiplier}) {
+  print("$bmrMultiplier");
   if (gender == "male") {
-    return print("1male");
-  } else {
-    return print("2female");
+    return ((655.1 +
+                (9.563 * double.parse(weightController.text)) +
+                (1.850 * double.parse(heightController.text)) -
+                (4.676 * double.parse(ageController.text))) *
+            bmrMultiplier!)
+        .round();
+  } else {}
+}
+
+double? calculateBMR({String? activity}) {
+  switch (activity) {
+    case "Sedentary":
+      return 1.2;
+    case "Lightly active":
+      return 1.375;
+
+    case "Moderately active":
+      return 1.55;
+
+    case "Active":
+      return 1.725;
+
+    case "Very Active":
+      return 1.9;
   }
 }

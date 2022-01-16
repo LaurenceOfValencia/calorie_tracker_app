@@ -24,7 +24,7 @@ TextEditingController ageController = TextEditingController();
 TextEditingController heightController = TextEditingController();
 TextEditingController weightController = TextEditingController();
 var gender = "male";
-String activity = 'Light';
+String activity = 'Lightly active';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -34,7 +34,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var items = ['Light', 'Moderate', 'Active', 'Very Active'];
+  var items = [
+    'Sedentary',
+    'Lightly active',
+    'Moderately active',
+    'Active',
+    'Very Active'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +154,9 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(
               onPressed: () => {
                     if (int.parse(ageController.text) >= 15 &&
-                        int.parse(ageController.text) <= 80)
+                        int.parse(ageController.text) <= 80 &&
+                        weightController.text.isEmpty == false &&
+                        heightController.text.isEmpty == false)
                       {
                         Navigator.push(
                           context,
