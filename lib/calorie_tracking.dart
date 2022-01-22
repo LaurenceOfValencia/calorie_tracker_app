@@ -25,93 +25,107 @@ class _CalorieTrackingState extends State<CalorieTracking> {
       weight: double.parse(weightController.text),
       bmrMultiplier: calculateBMR(activity: activity));
 
-  int caloriesNeeded = 2000;
+  TextEditingController foodItemController = TextEditingController();
+  TextEditingController calorieCountController = TextEditingController();
 
-  List<Widget> _listOfEntries = [Text("Entries")];
+  List<Widget> _listOfEntries = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          color: Colors.grey[300],
-          child: Column(
-            children: [
-              Container(
-                height: 100,
-                color: Colors.grey[200],
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.grey[300],
+            child: Column(
+              children: [
+                Container(
+                  height: 100,
+                  color: Colors.grey[200],
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Calories/day",
+                          style:
+                              TextStyle(color: Colors.blue[800], fontSize: 16),
+                        ),
+                        Text(
+                          "$iBMR calories left",
+                          style:
+                              TextStyle(color: Colors.grey[800], fontSize: 30),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Container(
+                    color: Colors.blue[200],
+                    height: 500,
+                    child: ListView.builder(
+                        itemCount: _listOfEntries.length,
+                        itemBuilder: (context, index) {
+                          return _listOfEntries[index];
+                        }),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    //add the new item here
+                    addEntryWidget();
+                    //TO DO: Add error catch
+                  },
+                  child: Row(
                     children: [
-                      Text(
-                        "Calories/day",
-                        style: TextStyle(color: Colors.blue[800], fontSize: 16),
+                      Expanded(
+                        child: TextFormField(
+                          controller: foodItemController,
+                          decoration: const InputDecoration(
+                              labelText: 'Food Name',
+                              border: OutlineInputBorder()),
+                        ),
                       ),
-                      Text(
-                        "$iBMR calories left",
-                        style: TextStyle(color: Colors.grey[800], fontSize: 30),
+                      Expanded(
+                        child: TextFormField(
+                          controller: calorieCountController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              labelText: 'Calories',
+                              border: OutlineInputBorder()),
+                        ),
+                      ),
+                      Container(
+                        height: 75,
+                        width: 75,
+                        decoration: BoxDecoration(
+                            color: Colors.blue[500], shape: BoxShape.circle),
+                        child: Center(
+                          child: Text(
+                            "+",
+                            style: TextStyle(color: Colors.white, fontSize: 25),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  //add the new item here
-                },
-                child: Container(
-                  height: 75,
-                  width: 75,
-                  decoration: BoxDecoration(
-                      color: Colors.blue[500], shape: BoxShape.circle),
-                  child: Center(
-                    child: Text(
-                      "+",
-                      style: TextStyle(color: Colors.white, fontSize: 25),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget addEntry() {
-    return Expanded(
-      child: Container(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.white,
-                  height: 50,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Food name"),
-                        Text("\ 100 cal"),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  void addEntryWidget() {
+    setState(() {
+      //add entry to the list
+      _listOfEntries.add(addEntry(
+          name: foodItemController.text, calorie: calorieCountController.text));
+    });
   }
 }
 
@@ -147,5 +161,43 @@ double? calculateBMR({String? activity}) {
 
     case "Very Active":
       return 1.9;
+  }
+}
+
+class addEntry extends StatelessWidget {
+  final String? name, calorie;
+
+  const addEntry({
+    Key? key,
+    required this.name,
+    required this.calorie,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 20,
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: EdgeInsets.all(10),
+            color: Colors.white,
+            height: 50,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("$name"),
+                  Text("\ $calorie cal"),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
