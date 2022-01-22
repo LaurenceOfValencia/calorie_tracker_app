@@ -63,7 +63,6 @@ class _CalorieTrackingState extends State<CalorieTracking> {
                 ),
                 SingleChildScrollView(
                   child: Container(
-                    color: Colors.blue[200],
                     height: 500,
                     child: ListView.builder(
                         itemCount: _listOfEntries.length,
@@ -123,9 +122,20 @@ class _CalorieTrackingState extends State<CalorieTracking> {
   void addEntryWidget() {
     setState(() {
       //add entry to the list
-      iBMR = iBMR! - int.parse(calorieCountController.text);
-      _listOfEntries.add(addEntry(
-          name: foodItemController.text, calorie: calorieCountController.text));
+      if (foodItemController.text.isEmpty ||
+          calorieCountController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(milliseconds: 2000),
+            content: const Text('Please check inputs'),
+          ),
+        );
+      } else {
+        iBMR = iBMR! - int.parse(calorieCountController.text);
+        _listOfEntries.add(addEntry(
+            name: foodItemController.text,
+            calorie: calorieCountController.text));
+      }
     });
   }
 }
