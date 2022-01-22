@@ -123,6 +123,7 @@ class _CalorieTrackingState extends State<CalorieTracking> {
   void addEntryWidget() {
     setState(() {
       //add entry to the list
+      iBMR = iBMR! - int.parse(calorieCountController.text);
       _listOfEntries.add(addEntry(
           name: foodItemController.text, calorie: calorieCountController.text));
     });
